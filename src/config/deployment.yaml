@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{name}}
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      category: {{category}}
+  template:
+    metadata:
+      labels:
+        category: {{category}}
+    spec:
+      containers:
+      - name: {{name}}
+        image: {{image}}
+        resources:
+          limits:
+            cpu: 100m
+            memory: 150Mi
+          requests:
+            cpu: 10m
+            memory: 30Mi
+        ports:
+        - containerPort: 9999
