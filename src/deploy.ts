@@ -48,16 +48,19 @@ export class Deployer {
     }
 
     async apply(conf: any) {
-        let res: k8s.KubernetesObject;
         try {
             await this.api.read(conf);
             logger.info(`k8 ${conf.kind}: ${conf.metadata.name} already exists. Patching...`);
-            res = (await this.api.patch(conf)).body;
+            try {
+                await this.api.patch(conf);
+            } catch (e) {
+                logger.info(`Failed to patch ${conf.kind}: ${conf.metadata.name}. Trying to delete and re-create (YOLO).`);
+                await this.api.delete(conf);
+                await this.api.create(conf);
+            }
         } catch (e) {
             logger.info(`k8 ${conf.kind}: ${conf.metadata.name} does not exist. Creating...`);
-            res = (await this.api.create(conf)).body;
+            await this.api.create(conf);
         }
-
-        logger.debug(`k8 response: ${res}`);
     }
 }
