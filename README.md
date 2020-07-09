@@ -210,6 +210,11 @@ state: hidden
 # Specifies what version of the challenge specification was used.
 # Subject to change until ctfcli v1.0.0
 version: "0.1"
+
+# The ports to expose. The target port will be used to access the deployed container.
+expose:
+- containerPort: 9999
+  targetPort: 30231
 ```
 
 4. The directory containing the `challenge.yml` file must _also_ contain a Dockerfile which will be used by GKE.<br><br>
@@ -250,9 +255,10 @@ Note: use the latest version of the Github Action.
 
 <br>
 8. Deploy
+
 ```yaml
 - name: Deploy
-   run: ctfup -c ctfup.yml .
+  run: ctfup -c ctfup.yml .
 ```
 
 <!-- _For more examples, please refer to the [Documentation](https://example.com)_ -->
