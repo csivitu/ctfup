@@ -11,7 +11,7 @@
   <h3 align="center">ctfup</h3>
 
   <p align="center">
-    A cli tool to deploy CTF challenges to a k8 cluster for csictf TODO: Docs
+    A cli tool to deploy CTF challenges to a k8 cluster for csictf
     <br />
     <a href="https://github.com/csivitu/ctfup"><strong>Explore the docs »</strong></a>
     <br />
@@ -43,7 +43,6 @@
 
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
 CTFUp is an npm package developed to streamline the deployment of CTF challenges to a kubernetes cluster. 
 
 ### Built With
