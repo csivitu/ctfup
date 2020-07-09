@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { Command } from 'commander';
 import logger from './logger';
 import {Challenges} from './challenges';
@@ -31,6 +33,7 @@ async function main() {
     for (const challenge of challenges.challenges) {
         if (challenge.type === 'hosted') {
             await deployer.buildChallenge(challenge);
+            await deployer.deployChallenge(challenge);
         }
     }
 }

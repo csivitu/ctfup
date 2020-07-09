@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{name}}
+  labels:
+    category: {{category}}
+    challenge: {{name}}
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      category: {{category}}
+      challenge: {{name}}
+  template:
+    metadata:
+      labels:
+        category: {{category}}
+        challenge: {{name}}
+    spec:
+      containers:
+      - name: {{name}}
+        image: {{image}}
+        resources:
+          limits:
+            cpu: 100m
+            memory: 150Mi
+          requests:
+            cpu: 10m
+            memory: 30Mi
+        {{#if expose}}
+        ports:
+        {{#each expose}}
+        - containerPort: {{containerPort}}
+        {{/each}}
+        {{/if}}
+
+{{#if expose}}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{name}}
+  labels:
+    category: {{category}}
+    challenge: {{name}}
+spec:
+  type: NodePort
+  selector:
+    category: {{category}}
+    challenge: {{name}}
+  ports:
+    {{#each expose}}
+    - port: {{containerPort}}
+      targetPort: {{containerPort}}
+      nodePort: {{targetPort}}
+    {{/each}}
+{{/if}}

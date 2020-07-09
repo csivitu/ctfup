@@ -11,7 +11,8 @@ interface PortMapping {
 interface Conf {
     name: string;
     category: string;
-    ports: PortMapping[]
+    expose: PortMapping[];
+    image?: string;
 }
 
 type ChallengeType = 'hosted' | 'non-hosted'
@@ -44,12 +45,12 @@ export class Challenge {
             conf = {
                 name: '',
                 category: '',
-                ports: [],
+                expose: [],
             };
             type = 'non-hosted';
         }
 
-
+        conf.name = conf.name.toLowerCase().replace(/\s/g, '-');
         logger.debug(`
                      Parsed ${dir}:
                          Name: ${conf.name}

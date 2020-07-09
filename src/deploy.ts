@@ -1,23 +1,33 @@
 import * as k8s from '@kubernetes/client-node';
+import path from 'path';
+import hb from 'handlebars';
+import fs from 'fs';
+import yaml from 'yaml';
+
 import {Challenge} from './challenge';
 import logger from './logger';
 import {Docker} from './docker';
 import {getConfig} from './config';
 
-
+const configFolder = path.resolve(__dirname, '..', 'config');
+const deploymentConfig = hb.compile(fs.readFileSync(
+    path.join(configFolder, 'deployment.yml'),
+    'utf8'
+));
 
 export class Deployer {
-    api: k8s.CoreV1Api;
+    api: k8s.KubernetesObjectApi;
     constructor() {
         const kc = new k8s.KubeConfig();
         kc.loadFromDefault();
-        this.api = kc.makeApiClient(k8s.CoreV1Api);
+        this.api = k8s.KubernetesObjectApi.makeApiClient(kc);
     }
 
     async buildChallenge(challenge: Challenge) {
         const config = getConfig();
-        console.log(challenge.conf.name);
-        const imageName = `${config.registry}/${challenge.conf.name.toLowerCase().replace(/\s/g, '-')}:latest`;
+        const imageName = challenge.conf.image || `${config.registry}/${challenge.conf.name}:latest`;
+
+        challenge.conf.image = imageName;
         logger.debug(`Building ${challenge.conf.name}`);
         await Docker.build(challenge.dir, imageName);
         logger.debug(`Built ${challenge.conf.name} sucesfully`);
@@ -25,5 +35,29 @@ export class Deployer {
         logger.debug(`Pushing ${challenge.conf.name} to registry`);
         await Docker.push(imageName);
         logger.debug(`Pushed ${challenge.conf.name} sucessfully`);
+    }
+
+    async deployChallenge(challenge: Challenge) {
+        const k8Conf = yaml.parseAllDocuments(deploymentConfig(challenge.conf));
+
+        for (const conf of k8Conf) {
+            logger.info(`Deploying ${challenge.conf.name}`);
+            logger.debug(conf.toJSON());
+            await this.apply(conf.toJSON());
+        }
+    }
+
+    async apply(conf: any) {
+        let res: k8s.KubernetesObject;
+        try {
+            await this.api.read(conf);
+            logger.info(`k8 ${conf.kind}: ${conf.metadata.name} already exists. Patching...`);
+            res = (await this.api.patch(conf)).body;
+        } catch (e) {
+            logger.info(`k8 ${conf.kind}: ${conf.metadata.name} does not exist. Creating...`);
+            res = (await this.api.create(conf)).body;
+        }
+
+        logger.debug(`k8 response: ${res}`);
     }
 }
