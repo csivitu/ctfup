@@ -30,11 +30,11 @@ export class Deployer {
         challenge.conf.image = imageName;
         logger.debug(`Building ${challenge.conf.name}`);
         await Docker.build(challenge.dir, imageName);
-        logger.debug(`Built ${challenge.conf.name} sucesfully`);
+        logger.debug(`Built ${challenge.conf.name} successfully`);
 
         logger.debug(`Pushing ${challenge.conf.name} to registry`);
         await Docker.push(imageName);
-        logger.debug(`Pushed ${challenge.conf.name} sucessfully`);
+        logger.debug(`Pushed ${challenge.conf.name} successfully`);
     }
 
     async deployChallenge(challenge: Challenge) {
