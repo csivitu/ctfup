@@ -13,6 +13,7 @@ async function main() {
         .version('0.0.1')
         .arguments('[dir]')
         .requiredOption('-c, --config <config>', 'deployment configuration')
+        .option('-d, --diff <commit-id>', 'deploy challenges which were changed from the specified commit-hash')
         .action((arg) => {
             dir = arg;
         });
@@ -27,8 +28,9 @@ async function main() {
     await parseConfig(program.config);
 
     const config = getConfig();
-    const challenges = await Challenges.parse(dir, config.categories);
-   
+    const options = { diff: program.diff };
+    const challenges = await Challenges.parse(dir, config.categories, options);
+    console.log(challenges);
     const deployer = new Deployer();
     for (const challenge of challenges.challenges) {
         if (challenge.type === 'hosted') {
@@ -37,6 +39,5 @@ async function main() {
         }
     }
 }
-
 
 main();
