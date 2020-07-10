@@ -32,10 +32,7 @@ export function diff(commitHash: string) {
                 reject(error);
                 return;
             }
-            resolve(stdout.split('\n').filter((line) => {
-                const trimmedLine = line.trim();
-                if (trimmedLine) return trimmedLine;
-            }));
+            resolve(stdout.trim().split('\n').map((line) => line.trim().slice(0, -1)));
         });
     });
 }
