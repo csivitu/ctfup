@@ -25,7 +25,7 @@ export class Deployer {
         this.api = k8s.KubernetesObjectApi.makeApiClient(kc);
     }
 
-    async buildChallenge(challenge: Challenge) {
+    static async buildChallenge(challenge: Challenge) {
         if (!challenge.conf.containers) {
             return;
         }
