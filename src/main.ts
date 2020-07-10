@@ -35,7 +35,7 @@ async function main() {
 
     const deployer = new Deployer();
 
-    for (const challenge of challenges) {
+    for (const challenge of challenges.challenges) {
         if (challenge.type === 'hosted') {
             await Deployer.buildChallenge(challenge);
             await deployer.deployChallenge(challenge);
