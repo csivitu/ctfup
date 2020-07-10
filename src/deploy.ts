@@ -28,7 +28,7 @@ export class Deployer {
     static async buildChallenge(chall: Challenge) {
         const config = getConfig();
         const challenge = chall;
-        const imageName = challenge.conf.image || `${config.registry}/${challenge.conf.name}:${getHash()}`;
+        const imageName = challenge.conf.image || `${config.registry}/${challenge.conf.name}:${await getHash()}`;
 
         challenge.conf.image = imageName;
         logger.debug(`Building ${challenge.conf.name}`);
