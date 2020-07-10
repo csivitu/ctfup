@@ -6,7 +6,11 @@ metadata:
     category: {{category}}
     challenge: {{name}}
 spec:
-  replicas: 2
+  {{#if replicas }}
+  replicas: {{replicas}}
+  {{else}}
+  replicas: 1
+  {{/if}}
   selector:
     matchLabels:
       category: {{category}}
@@ -17,22 +21,30 @@ spec:
         category: {{category}}
         challenge: {{name}}
     spec:
+      {{#each containers}}
       containers:
-      - name: {{name}}
+      - name: {{@key}}
         image: {{image}}
+        {{#if resources}}
         resources:
+          {{#if resources.limits}}
           limits:
-            cpu: 100m
-            memory: 150Mi
+            cpu: {{resources.limits.cpu}}
+            memory: {{resources.limits.memory}}
+          {{/if}}
+          {{#if resources.requests}}
           requests:
-            cpu: 10m
-            memory: 30Mi
-        {{#if expose}}
+            cpu: {{resources.requests.cpu}}
+            memory: {{resources.requests.memory}}
+          {{/if}}
+        {{/if}}
+        {{#if ports}}
         ports:
-        {{#each expose}}
+        {{#each ports}}
         - containerPort: {{containerPort}}
         {{/each}}
         {{/if}}
+      {{/each}}
 
 {{#if expose}}
 ---
@@ -52,6 +64,6 @@ spec:
     {{#each expose}}
     - port: {{containerPort}}
       targetPort: {{containerPort}}
-      nodePort: {{targetPort}}
+      nodePort: {{nodePort}}
     {{/each}}
 {{/if}}

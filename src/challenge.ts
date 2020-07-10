@@ -5,14 +5,34 @@ import logger from './logger';
 
 interface PortMapping {
     containerPort: number;
-    serverPort: number;
+    nodePort?: number;
+}
+
+interface ResourceConstraints {
+    limits?: {
+        cpu: string,
+        memory: string
+    },
+    requests?: {
+        cpu: string,
+        memory: string
+    }
+}
+
+interface Container {
+    image?: string;
+    ports?: PortMapping[];
+    build?: string;
+    env?: { [key: string]: string }
+    resources?: ResourceConstraints;
 }
 
 interface Conf {
     name: string;
     category: string;
-    expose: PortMapping[];
-    image?: string;
+    expose?: PortMapping[];
+    containers?: {[name: string]: Container};
+    replicas?: number;
 }
 
 type ChallengeType = 'hosted' | 'non-hosted'
@@ -45,7 +65,6 @@ export class Challenge {
             conf = {
                 name: '',
                 category: '',
-                expose: [],
             };
             type = 'non-hosted';
         }

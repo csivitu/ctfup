@@ -24,17 +24,26 @@ export class Deployer {
     }
 
     async buildChallenge(challenge: Challenge) {
-        const config = getConfig();
-        const imageName = challenge.conf.image || `${config.registry}/${challenge.conf.name}:latest`;
+        if (!challenge.conf.containers) {
+            return;
+        }
+        for (const name in challenge.conf.containers) {
+            const container = challenge.conf.containers[name];
+            if (!container.build) {
+                return;
+            }
+            const config = getConfig();
+            const imageName = `${config.registry}/${challenge.conf.name}-${name}:latest`;
 
-        challenge.conf.image = imageName;
-        logger.debug(`Building ${challenge.conf.name}`);
-        await Docker.build(challenge.dir, imageName);
-        logger.debug(`Built ${challenge.conf.name} successfully`);
+            logger.debug(`Building ${challenge.conf.name}`);
+            await Docker.build(path.join(challenge.dir, container.build), imageName);
+            logger.debug(`Built ${challenge.conf.name} successfully`);
 
-        logger.debug(`Pushing ${challenge.conf.name} to registry`);
-        await Docker.push(imageName);
-        logger.debug(`Pushed ${challenge.conf.name} successfully`);
+            logger.debug(`Pushing ${challenge.conf.name} to registry`);
+            await Docker.push(imageName);
+            logger.debug(`Pushed ${challenge.conf.name} successfully`);
+            container.image = imageName;
+        }
     }
 
     async deployChallenge(challenge: Challenge) {
