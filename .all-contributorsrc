@@ -1,0 +1,25 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "thebongy",
+      "name": "Rishit Bansal",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/7080652?v=4",
+      "profile": "https://github.com/thebongy",
+      "contributions": [
+        "code",
+        "infra"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "ctfup",
+  "projectOwner": "csivitu",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}
