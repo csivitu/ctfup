@@ -26,7 +26,7 @@ export class Challenges {
         await Promise.all(categories.map(async (c) => {
             const categoryFolder = path.join(dir, c);
             logger.debug(`Parsing category ${categoryFolder}`);
-            
+
             await Promise.all(
                 (await fs.readdir(categoryFolder)).map(async (folder) => {
                     const challengeFolder = path.join(categoryFolder, folder);
@@ -36,17 +36,17 @@ export class Challenges {
                             if (modifiedChallenges.filter((chall) => chall.includes(challengeFolder)).length) {
                                 logger.debug(`Parsing challenge ${folder}`);
                                 challengePromises.push(
-                                    Challenge.parse(challengeFolder)
+                                    Challenge.parse(challengeFolder),
                                 );
                             }
                         } else {
                             logger.debug(`Parsing challenge ${folder}`);
                             challengePromises.push(
-                                Challenge.parse(challengeFolder)
+                                Challenge.parse(challengeFolder),
                             );
                         }
                     }
-                })
+                }),
             );
         }));
 
