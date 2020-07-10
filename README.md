@@ -267,11 +267,12 @@ Note: use the latest version of the Github Action.
 
 1. Differential deployment
 ```sh
-ctfup -c ctfup.yml -d <commit id>
+ctfup -c ctfup.yml -d <commit-id> .
 ```
-CTFUp will calculate the difference between the commits and deploy only those challenges that have been modified since the < commit id > that is passed.
+`ctfup` will calculate the difference between the commits and deploy only those challenges that have been modified since the <commit-id\> that is passed. Refer to [this](https://github.com/csivitu/ctfup/issues/2) for details.
+<br />
 
-eg. 
+For example:
 
 ```sh
 ctfup -c ctfup.yml -d a745313b88cbe3947653b493cc968c640b28218e
