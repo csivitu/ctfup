@@ -1,0 +1,9 @@
+config
+src
+tsconfig.json
+node_modules
+.eslintrc.json
+.all-contributorsrc
+.github
+package-lock.json
+.gitignore
