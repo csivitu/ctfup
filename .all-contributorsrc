@@ -24,6 +24,15 @@
         "code",
         "infra"
       ]
+    },
+    {
+      "login": "theProgrammerDavid",
+      "name": "theProgrammerDavid",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/35698009?v=4",
+      "profile": "https://github.com/theProgrammerDavid",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
