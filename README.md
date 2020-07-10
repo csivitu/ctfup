@@ -279,7 +279,7 @@ ctfup -c ctfup.yml -d a745313b88cbe3947653b493cc968c640b28218e
 
 ## Additional Resources
 
-* [gcloud installation](https://cloud.google.com/sdk/install)
+* [gcloud sdk installation](https://cloud.google.com/sdk/install)
 * [Creating a service account](https://cloud.google.com/iam/docs/creating-managing-service-accounts)
 
 
