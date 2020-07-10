@@ -35,7 +35,7 @@ export class Deployer {
             if (!container.build) {
                 return;
             }
-            const imageName = `${config.registry}/${challenge.conf.name}-${name}:${getHash()}`;
+            const imageName = `${config.registry}/${challenge.conf.name}-${name}:${await getHash()}`;
 
             logger.debug(`Building ${challenge.conf.name}`);
             await Docker.build(path.join(challenge.dir, container.build), imageName);

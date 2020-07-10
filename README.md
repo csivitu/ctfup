@@ -8,7 +8,7 @@
 <br />
 <p align="center">
   <a href="https://github.com/csivitu/ctfup">
-    <img src="https://csivit.com/images/favicon.png" alt="Logo" width="80">
+    <img src="https://raw.githubusercontent.com/csivitu/CSIWebsite2.0/master/Website/images/favicon.png" alt="Logo" width="80">
   </a>
 
   <h3 align="center">ctfup</h3>
