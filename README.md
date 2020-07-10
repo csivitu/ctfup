@@ -63,10 +63,7 @@ To get a local copy up and running follow these simple steps.
 This package is intended to be used in your CI script, or with the appropriate Google Cloud SDK.
 
 - npm
-
-```sh
-npm install npm@latest -g
-```
+- [Google Cloud SDK](https://cloud.google.com/sdk)
 
 - A Google Cloud account with the Kubernetes Engine enabled.
 - A Google Cloud Service account.
