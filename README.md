@@ -11,7 +11,7 @@
   <h3 align="center">ctfup</h3>
 
   <p align="center">
-    A cli tool to deploy CTF challenges to a k8 cluster for csictf
+    A CLI tool to deploy CTF challenges to a k8 cluster for `csictf`.
     <br />
     <a href="https://github.com/csivitu/ctfup"><strong>Explore the docs »</strong></a>
     <br />
