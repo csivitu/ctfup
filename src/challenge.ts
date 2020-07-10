@@ -2,13 +2,14 @@ import fs from 'fs-extra';
 import path from 'path';
 import yaml from 'yaml';
 import logger from './logger';
+import {getConfig} from './config';
 
 interface PortMapping {
     containerPort: number;
     nodePort?: number;
 }
 
-interface ResourceConstraints {
+export interface ResourceConstraints {
     limits?: {
         cpu: string,
         memory: string
@@ -53,12 +54,23 @@ export class Challenge {
         let type: ChallengeType;
         let conf: Conf;
 
+        const defaults = getConfig().resources;
+
         if (await fs.pathExists(ymlPath)) {
             conf = yaml.parse(await fs.readFile(ymlPath, 'utf8')) as Conf;
             if (await fs.pathExists(path.join(dir, 'Dockerfile'))) { 
                 type = 'hosted';
             } else {
                 type = 'non-hosted';
+            }
+
+            if (conf.containers) {
+                for (const name in conf.containers) {
+                    const container = conf.containers[name];
+                    if (!container.resources && defaults) {
+                        container.resources = defaults;
+                    }
+                }
             }
         } else {
             logger.warn(`Challenge ${dir} does not have a yml file!`)

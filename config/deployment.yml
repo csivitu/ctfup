@@ -20,9 +20,10 @@ spec:
       labels:
         category: {{category}}
         challenge: {{name}}
+    {{#if containers}}
     spec:
-      {{#each containers}}
       containers:
+      {{#each containers}}
       - name: {{@key}}
         image: {{image}}
         {{#if resources}}
@@ -42,9 +43,11 @@ spec:
         ports:
         {{#each ports}}
         - containerPort: {{containerPort}}
+          name: port-{{containerPort}}
         {{/each}}
         {{/if}}
       {{/each}}
+  {{/if}}
 
 {{#if expose}}
 ---
@@ -63,6 +66,7 @@ spec:
   ports:
     {{#each expose}}
     - port: {{containerPort}}
+      name: port-{{containerPort}}
       targetPort: {{containerPort}}
       nodePort: {{nodePort}}
     {{/each}}

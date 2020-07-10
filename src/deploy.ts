@@ -51,7 +51,7 @@ export class Deployer {
 
         for (const conf of k8Conf) {
             logger.info(`Deploying ${challenge.conf.name}`);
-            logger.debug(conf.toJSON());
+            logger.debug(JSON.stringify(conf.toJSON(), null, 4));
             await this.apply(conf.toJSON());
         }
     }
