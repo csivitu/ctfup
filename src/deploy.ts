@@ -4,28 +4,31 @@ import hb from 'handlebars';
 import fs from 'fs';
 import yaml from 'yaml';
 
-import {Challenge} from './challenge';
+import { Challenge } from './challenge';
 import logger from './logger';
-import {Docker} from './docker';
-import {getConfig} from './config';
+import { Docker } from './docker';
+import { getConfig } from './config';
+import { getHash } from './command';
 
 const configFolder = path.resolve(__dirname, '..', 'config');
 const deploymentConfig = hb.compile(fs.readFileSync(
     path.join(configFolder, 'deployment.yml'),
-    'utf8'
+    'utf8',
 ));
 
 export class Deployer {
     api: k8s.KubernetesObjectApi;
+
     constructor() {
         const kc = new k8s.KubeConfig();
         kc.loadFromDefault();
         this.api = k8s.KubernetesObjectApi.makeApiClient(kc);
     }
 
-    async buildChallenge(challenge: Challenge) {
+    static async buildChallenge(chall: Challenge) {
         const config = getConfig();
-        const imageName = challenge.conf.image || `${config.registry}/${challenge.conf.name}:latest`;
+        const challenge = chall;
+        const imageName = challenge.conf.image || `${config.registry}/${challenge.conf.name}:${getHash()}`;
 
         challenge.conf.image = imageName;
         logger.debug(`Building ${challenge.conf.name}`);
@@ -40,11 +43,11 @@ export class Deployer {
     async deployChallenge(challenge: Challenge) {
         const k8Conf = yaml.parseAllDocuments(deploymentConfig(challenge.conf));
 
-        for (const conf of k8Conf) {
+        k8Conf.forEach(async (conf) => {
             logger.info(`Deploying ${challenge.conf.name}`);
             logger.debug(conf.toJSON());
             await this.apply(conf.toJSON());
-        }
+        });
     }
 
     async apply(conf: any) {
@@ -64,3 +67,5 @@ export class Deployer {
         }
     }
 }
+
+export default Deployer;

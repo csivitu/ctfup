@@ -11,12 +11,13 @@ interface Options {
 
 export class Challenges {
     challenges: Challenge[];
+
     constructor(challenges: Challenge[]) {
         this.challenges = challenges;
     }
 
     static async parse(dir: string, categories: string[], options?: Options) {
-        let challengePromises: Promise<Challenge>[] = [];
+        const challengePromises: Promise<Challenge>[] = [];
 
         let modifiedChallenges: Array<string> = [];
         if (options && options.diff) {
@@ -33,7 +34,10 @@ export class Challenges {
 
                     if ((await fs.stat(challengeFolder)).isDirectory()) {
                         if (options && options.diff && modifiedChallenges.length) {
-                            if (modifiedChallenges.filter((chall) => chall.includes(challengeFolder)).length) {
+                            if (modifiedChallenges.filter(
+                                (chall) => chall.includes(challengeFolder),
+                            ).length
+                            ) {
                                 logger.debug(`Parsing challenge ${folder}`);
                                 challengePromises.push(
                                     Challenge.parse(challengeFolder),
@@ -53,3 +57,5 @@ export class Challenges {
         return new Challenges(await Promise.all(challengePromises));
     }
 }
+
+export default Challenges;
