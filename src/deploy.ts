@@ -25,7 +25,7 @@ export class Deployer {
         this.api = k8s.KubernetesObjectApi.makeApiClient(kc);
     }
 
-    async buildChallenge(chall: Challenge) {
+    static async buildChallenge(chall: Challenge) {
         const config = getConfig();
         const challenge = chall;
         const imageName = challenge.conf.image || `${config.registry}/${challenge.conf.name}:${getHash()}`;

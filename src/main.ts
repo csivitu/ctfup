@@ -37,7 +37,7 @@ async function main() {
 
     challenges.challenges.forEach(async (challenge) => {
         if (challenge.type === 'hosted') {
-            await deployer.buildChallenge(challenge);
+            await Deployer.buildChallenge(challenge);
             await deployer.deployChallenge(challenge);
         }
     });
