@@ -23,6 +23,9 @@
         "@typescript-eslint/indent": [
             "error",
             4
-        ]
+		],
+		"no-restricted-syntax": "warn",
+		"guard-for-in": "warn",
+		"no-await-in-loop": "warn"
     }
 }

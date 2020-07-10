@@ -1,6 +1,16 @@
 import yaml from 'yaml';
 import fs from 'fs-extra';
-import {ResourceConstraints} from './challenge';
+
+export interface ResourceConstraints {
+    limits?: {
+        cpu: string,
+        memory: string
+    },
+    requests?: {
+        cpu: string,
+        memory: string
+    }
+}
 
 interface Config {
     registry: string;

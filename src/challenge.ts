@@ -2,22 +2,11 @@ import fs from 'fs-extra';
 import path from 'path';
 import yaml from 'yaml';
 import logger from './logger';
-import {getConfig} from './config';
+import { getConfig, ResourceConstraints } from './config';
 
 interface PortMapping {
     containerPort: number;
     nodePort?: number;
-}
-
-export interface ResourceConstraints {
-    limits?: {
-        cpu: string,
-        memory: string
-    },
-    requests?: {
-        cpu: string,
-        memory: string
-    }
 }
 
 interface Container {

@@ -4,11 +4,11 @@ import hb from 'handlebars';
 import fs from 'fs';
 import yaml from 'yaml';
 
-import {Challenge} from './challenge';
+import { Challenge } from './challenge';
 import logger from './logger';
-import {Docker} from './docker';
-import {getConfig} from './config';
-import {getHash} from './command';
+import { Docker } from './docker';
+import { getConfig } from './config';
+import { getHash } from './command';
 
 const configFolder = path.resolve(__dirname, '..', 'config');
 const deploymentConfig = hb.compile(fs.readFileSync(
