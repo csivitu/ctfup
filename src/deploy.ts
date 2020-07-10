@@ -51,11 +51,11 @@ export class Deployer {
     async deployChallenge(challenge: Challenge) {
         const k8Conf = yaml.parseAllDocuments(deploymentConfig(challenge.conf));
 
-        k8Conf.forEach(async (conf) => {
+        for (const conf of k8Conf) {
             logger.info(`Deploying ${challenge.conf.name}`);
             logger.debug(JSON.stringify(conf.toJSON(), null, 4));
             await this.apply(conf.toJSON());
-        });
+        }
     }
 
     async apply(conf: any) {

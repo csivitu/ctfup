@@ -35,12 +35,12 @@ async function main() {
 
     const deployer = new Deployer();
 
-    challenges.challenges.forEach(async (challenge) => {
+    for (const challenge of challenges) {
         if (challenge.type === 'hosted') {
             await Deployer.buildChallenge(challenge);
             await deployer.deployChallenge(challenge);
         }
-    });
+    }
 }
 
 main();
