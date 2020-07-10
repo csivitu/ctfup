@@ -8,15 +8,17 @@ import {Challenge} from './challenge';
 import logger from './logger';
 import {Docker} from './docker';
 import {getConfig} from './config';
+import {getHash} from './command';
 
 const configFolder = path.resolve(__dirname, '..', 'config');
 const deploymentConfig = hb.compile(fs.readFileSync(
     path.join(configFolder, 'deployment.yml'),
-    'utf8'
+    'utf8',
 ));
 
 export class Deployer {
     api: k8s.KubernetesObjectApi;
+
     constructor() {
         const kc = new k8s.KubeConfig();
         kc.loadFromDefault();
@@ -27,13 +29,13 @@ export class Deployer {
         if (!challenge.conf.containers) {
             return;
         }
+        const config = getConfig();
         for (const name in challenge.conf.containers) {
             const container = challenge.conf.containers[name];
             if (!container.build) {
                 return;
             }
-            const config = getConfig();
-            const imageName = `${config.registry}/${challenge.conf.name}-${name}:latest`;
+            const imageName = `${config.registry}/${challenge.conf.name}-${name}:${getHash()}`;
 
             logger.debug(`Building ${challenge.conf.name}`);
             await Docker.build(path.join(challenge.dir, container.build), imageName);
@@ -49,11 +51,11 @@ export class Deployer {
     async deployChallenge(challenge: Challenge) {
         const k8Conf = yaml.parseAllDocuments(deploymentConfig(challenge.conf));
 
-        for (const conf of k8Conf) {
+        k8Conf.forEach(async (conf) => {
             logger.info(`Deploying ${challenge.conf.name}`);
             logger.debug(JSON.stringify(conf.toJSON(), null, 4));
             await this.apply(conf.toJSON());
-        }
+        });
     }
 
     async apply(conf: any) {
@@ -73,3 +75,5 @@ export class Deployer {
         }
     }
 }
+
+export default Deployer;

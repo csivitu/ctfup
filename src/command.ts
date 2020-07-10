@@ -1,7 +1,6 @@
 import { spawn, exec } from 'child_process';
 import logger from './logger';
 
-
 export async function runCommand(command: string, args: string[]) {
     return new Promise((resolve, reject) => {
         const build = spawn(command, args);
@@ -36,6 +35,23 @@ export function diff(commitHash: string): Promise<Array<string>> {
                 logger.error(stderr);
             }
             resolve(stdout.trim().split('\n').map((line) => line.trim().slice(0, -1)));
+        });
+    });
+}
+
+export function getHash(): Promise<string> {
+    return new Promise((resolve, reject) => {
+        exec('git rev-parse HEAD', (error, stdout, stderr) => {
+            if (error) {
+                reject(error);
+                return;
+            }
+
+            if (stderr) {
+                logger.error(stderr);
+            }
+
+            resolve(stdout.trim());
         });
     });
 }

@@ -13,7 +13,6 @@ let config: Config = {
     categories: [],
 };
 
-
 async function parseConfig(confPath: string) {
     config = yaml.parse(await fs.readFile(confPath, 'utf-8'));
 }
