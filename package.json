@@ -1,6 +1,6 @@
 {
   "name": "ctfup",
-  "version": "1.0.8",
+  "version": "1.0.11",
   "main": "index.js",
   "bin": "lib/main.js",
   "scripts": {
@@ -21,7 +21,14 @@
   },
   "author": "",
   "license": "ISC",
-  "description": "",
+  "keywords": [
+    "ctf",
+    "docker",
+    "kubernetes",
+    "auto-deploy",
+    "ctf-challenges"
+  ],
+  "description": "A CLI tool to deploy CTF challenges to a k8 cluster.",
   "dependencies": {
     "@kubernetes/client-node": "^0.12.0",
     "@types/fs-extra": "^9.0.1",
