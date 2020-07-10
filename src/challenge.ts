@@ -21,7 +21,7 @@ interface Conf {
     name: string;
     category: string;
     expose?: PortMapping[];
-    containers?: {[name: string]: Container};
+    containers?: { [name: string]: Container };
     replicas?: number;
 }
 
@@ -49,19 +49,16 @@ export class Challenge {
 
         if (await fs.pathExists(ymlPath)) {
             conf = yaml.parse(await fs.readFile(ymlPath, 'utf8')) as Conf;
-            if (await fs.pathExists(path.join(dir, 'Dockerfile'))) {
-                type = 'hosted';
-            } else {
-                type = 'non-hosted';
-            }
-
             if (conf.containers) {
+                type = 'hosted';
                 for (const name in conf.containers) {
                     const container = conf.containers[name];
                     if (!container.resources && defaults) {
                         container.resources = defaults;
                     }
                 }
+            } else {
+                type = 'non-hosted';
             }
         } else {
             logger.warn(`Challenge ${dir} does not have a yml file!`);
