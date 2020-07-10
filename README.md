@@ -269,13 +269,20 @@ Note: use the latest version of the Github Action.
 ```sh
 ctfup -c ctfup.yml -d <commit id>
 ```
-CTFUp will calculate the difference between the commits and deploy only those challenges that have been modified since the <commit id> that is passed.
+CTFUp will calculate the difference between the commits and deploy only those challenges that have been modified since the < commit id > that is passed.
 
 eg. 
 
 ```sh
 ctfup -c ctfup.yml -d a745313b88cbe3947653b493cc968c640b28218e
 ```
+
+## Additional Resources
+
+* [gcloud installation](https://cloud.google.com/sdk/install)
+* [Creating a service account](https://cloud.google.com/iam/docs/creating-managing-service-accounts)
+
+
 <!-- ROADMAP -->
 
 ## Roadmap
