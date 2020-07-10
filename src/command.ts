@@ -1,7 +1,6 @@
 import { spawn, exec } from 'child_process';
 import logger from './logger';
 
-
 export async function runCommand(command: string, args: string[]) {
     return new Promise((resolve, reject) => {
         const build = spawn(command, args);

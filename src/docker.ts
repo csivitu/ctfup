@@ -1,4 +1,4 @@
-import {runCommand} from './command';
+import { runCommand } from './command';
 
 export class Docker {
     static async build(context: string, tag: string) {
@@ -9,3 +9,5 @@ export class Docker {
         return runCommand('docker', ['push', tag]);
     }
 }
+
+export default Docker;

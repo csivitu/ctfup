@@ -2,13 +2,13 @@
 
 import { Command } from 'commander';
 import logger from './logger';
-import {Challenges} from './challenges';
-import {Deployer} from './deploy';
-import {parseConfig, getConfig} from './config';
+import { Challenges } from './challenges';
+import { Deployer } from './deploy';
+import { parseConfig, getConfig } from './config';
 
 async function main() {
     const program = new Command();
-    let dir: string = "";
+    let dir: string = '';
     program
         .version('0.0.1')
         .arguments('[dir]')
@@ -30,14 +30,17 @@ async function main() {
     const config = getConfig();
     const options = { diff: program.diff };
     const challenges = await Challenges.parse(dir, config.categories, options);
-    console.log(challenges);
+
+    logger.debug(challenges);
+
     const deployer = new Deployer();
-    for (const challenge of challenges.challenges) {
+
+    challenges.challenges.forEach(async (challenge) => {
         if (challenge.type === 'hosted') {
             await deployer.buildChallenge(challenge);
             await deployer.deployChallenge(challenge);
         }
-    }
+    });
 }
 
 main();

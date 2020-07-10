@@ -13,19 +13,21 @@ import { getHash } from './command';
 const configFolder = path.resolve(__dirname, '..', 'config');
 const deploymentConfig = hb.compile(fs.readFileSync(
     path.join(configFolder, 'deployment.yml'),
-    'utf8'
+    'utf8',
 ));
 
 export class Deployer {
     api: k8s.KubernetesObjectApi;
+
     constructor() {
         const kc = new k8s.KubeConfig();
         kc.loadFromDefault();
         this.api = k8s.KubernetesObjectApi.makeApiClient(kc);
     }
 
-    async buildChallenge(challenge: Challenge) {
+    async buildChallenge(chall: Challenge) {
         const config = getConfig();
+        const challenge = chall;
         const imageName = challenge.conf.image || `${config.registry}/${challenge.conf.name}:${getHash()}`;
 
         challenge.conf.image = imageName;
@@ -41,11 +43,11 @@ export class Deployer {
     async deployChallenge(challenge: Challenge) {
         const k8Conf = yaml.parseAllDocuments(deploymentConfig(challenge.conf));
 
-        for (const conf of k8Conf) {
+        k8Conf.forEach(async (conf) => {
             logger.info(`Deploying ${challenge.conf.name}`);
             logger.debug(conf.toJSON());
             await this.apply(conf.toJSON());
-        }
+        });
     }
 
     async apply(conf: any) {
@@ -65,3 +67,5 @@ export class Deployer {
         }
     }
 }
+
+export default Deployer;
