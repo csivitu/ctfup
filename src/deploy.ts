@@ -4,10 +4,11 @@ import hb from 'handlebars';
 import fs from 'fs';
 import yaml from 'yaml';
 
-import {Challenge} from './challenge';
+import { Challenge } from './challenge';
 import logger from './logger';
-import {Docker} from './docker';
-import {getConfig} from './config';
+import { Docker } from './docker';
+import { getConfig } from './config';
+import { getHash } from './command';
 
 const configFolder = path.resolve(__dirname, '..', 'config');
 const deploymentConfig = hb.compile(fs.readFileSync(
@@ -25,7 +26,7 @@ export class Deployer {
 
     async buildChallenge(challenge: Challenge) {
         const config = getConfig();
-        const imageName = challenge.conf.image || `${config.registry}/${challenge.conf.name}:latest`;
+        const imageName = challenge.conf.image || `${config.registry}/${challenge.conf.name}:${getHash()}`;
 
         challenge.conf.image = imageName;
         logger.debug(`Building ${challenge.conf.name}`);

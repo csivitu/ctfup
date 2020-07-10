@@ -39,3 +39,20 @@ export function diff(commitHash: string): Promise<Array<string>> {
         });
     });
 }
+
+export function getHash(): Promise<string> {
+    return new Promise((resolve, reject) => {
+        exec('git rev-parse HEAD', (error, stdout, stderr) => {
+            if (error) {
+                reject(error);
+                return;
+            }
+
+            if (stderr) {
+                logger.error(stderr);
+            }
+
+            resolve(stdout.trim());
+        });
+    });
+}
