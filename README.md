@@ -76,10 +76,16 @@ This package is intended to be used in your CI script, or with the appropriate G
 git clone https://github.com/csivitu/ctfup.git
 ```
 
+
 2. Install NPM packages
 
 ```sh
 npm install
+```
+
+Alternatively, You may download the npm package with the command:
+```sh
+npm install -g ctfup
 ```
 
 <!-- USAGE EXAMPLES -->
@@ -257,8 +263,19 @@ Note: use the latest version of the Github Action.
   run: ctfup -c ctfup.yml .
 ```
 
-<!-- _For more examples, please refer to the [Documentation](https://example.com)_ -->
+## Additional Features
 
+1. Differential deployment
+```sh
+ctfup -c ctfup.yml -d <commit id>
+```
+CTFUp will calculate the difference between the commits and deploy only those challenges that have been modified since the <commit id> that is passed.
+
+eg. 
+
+```sh
+ctfup -c ctfup.yml -d a745313b88cbe3947653b493cc968c640b28218e
+```
 <!-- ROADMAP -->
 
 ## Roadmap
