@@ -1,6 +1,6 @@
 {
   "name": "ctfup",
-  "version": "1.0.14",
+  "version": "1.0.15",
   "main": "index.js",
   "bin": "lib/main.js",
   "scripts": {
