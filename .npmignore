@@ -6,3 +6,5 @@ node_modules
 .github
 package-lock.json
 .gitignore
+CODE_OF_CONDUCT.md
+CONTRIBUTING.md
