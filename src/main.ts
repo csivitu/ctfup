@@ -14,6 +14,7 @@ async function main() {
         .arguments('[dir]')
         .requiredOption('-c, --config <config>', 'deployment configuration')
         .option('-d, --diff <commit-id>', 'deploy challenges which were changed from the specified commit-hash')
+        .option('-bo, --build-only', 'only build and push docker containers, don\'t deploy to kubernetes')
         .action((arg) => {
             dir = arg;
         });
@@ -25,10 +26,11 @@ async function main() {
         dir = '.';
     }
 
-    await parseConfig(program.config);
+    const options = { diff: program.diff, buildOnly: program.buildOnly };
 
+    await parseConfig(program.config);
     const config = getConfig();
-    const options = { diff: program.diff };
+
     const challenges = await Challenges.parse(dir, config.categories, options);
 
     logger.debug(challenges);
@@ -38,7 +40,9 @@ async function main() {
     for (const challenge of challenges.challenges) {
         if (challenge.type === 'hosted') {
             await Deployer.buildChallenge(challenge);
-            await deployer.deployChallenge(challenge);
+            if (!options.buildOnly) {
+                await deployer.deployChallenge(challenge);
+            }
         }
     }
 }
