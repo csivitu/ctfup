@@ -1,7 +1,18 @@
+{{#if namespace}}
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: {{namespace}}
+---
+{{/if}}
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{name}}
+  {{#if namespace}}
+  namespace: {{namespace}}
+  {{/if}}
   labels:
     category: {{category}}
     challenge: {{name}}
@@ -55,6 +66,9 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{name}}
+  {{#if namespace}}
+  namespace: {{namespace}}
+  {{/if}}
   labels:
     category: {{category}}
     challenge: {{name}}

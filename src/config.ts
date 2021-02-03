@@ -16,6 +16,7 @@ interface Config {
     registry: string;
     categories: string[];
     resources?: ResourceConstraints;
+    namespace?: string;
 }
 
 let config: Config = {
