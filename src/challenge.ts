@@ -49,6 +49,8 @@ export class Challenge {
 
         if (await fs.pathExists(ymlPath)) {
             conf = yaml.parse(await fs.readFile(ymlPath, 'utf8')) as Conf;
+            conf.name = path.basename(dir);
+            conf.category = path.basename(path.dirname(dir));
             if (conf.containers) {
                 type = 'hosted';
                 for (const name in conf.containers) {
