@@ -23,6 +23,7 @@ interface Conf {
     expose?: PortMapping[];
     containers?: { [name: string]: Container };
     replicas?: number;
+    namespace?: string;
 }
 
 type ChallengeType = 'hosted' | 'non-hosted';
@@ -45,7 +46,7 @@ export class Challenge {
         let type: ChallengeType;
         let conf: Conf;
 
-        const defaults = getConfig().resources;
+        const defaults = getConfig();
 
         if (await fs.pathExists(ymlPath)) {
             conf = yaml.parse(await fs.readFile(ymlPath, 'utf8')) as Conf;
@@ -53,9 +54,12 @@ export class Challenge {
                 type = 'hosted';
                 for (const name in conf.containers) {
                     const container = conf.containers[name];
-                    if (!container.resources && defaults) {
-                        container.resources = defaults;
+                    if (!container.resources && defaults.resources) {
+                        container.resources = defaults.resources;
                     }
+                }
+                if (!conf.namespace && defaults.namespace) {
+                    conf.namespace = defaults.namespace;
                 }
             } else {
                 type = 'non-hosted';
