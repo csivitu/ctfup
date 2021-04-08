@@ -41,6 +41,14 @@ export class Challenge {
     }
 
     static async parse(dir: string) {
+        // The challenge folder name is sent to Kubernetes for a label
+        // It has to start with a letter and contain only letter, numbers and dashes
+        if (!path.basename(dir).match(/^[a-zA-Z][A-Za-z0-9_-]+$/)) {
+            logger.error('The challenge folder name must start with a letter and can only contain letters, numbers and dashes');
+            logger.error(`"${dir}" not valid`);
+            process.exit(1);
+        }
+
         const ymlPath = path.join(dir, 'challenge.yml');
         let type: ChallengeType;
         let conf: Conf;

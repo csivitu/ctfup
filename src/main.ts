@@ -31,6 +31,16 @@ async function main() {
     await parseConfig(program.config);
     const config = getConfig();
 
+    // The category folder name is sent to Kubernetes for a label
+    // It has to start with a letter and contain only letter, numbers and dashes
+    for (const category of config.categories) {
+        if (!category.match(/^[a-zA-Z][A-Za-z0-9_-]+$/)) {
+            logger.error('The category folder name must start with a letter and can only contain letters, numbers and dashes');
+            logger.error(`"${category}" not valid`);
+            process.exit(1);
+        }
+    }
+
     const challenges = await Challenges.parse(dir, config.categories, options);
 
     logger.debug(challenges);
