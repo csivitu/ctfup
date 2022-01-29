@@ -81,7 +81,7 @@ spec:
     {{#each expose}}
     - port: {{containerPort}}
       name: port-{{containerPort}}
-      targetPort: {{containerPort}}
+      targetPort: {{targetPort}}
       nodePort: {{nodePort}}
     {{/each}}
 {{/if}}
